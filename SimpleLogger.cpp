@@ -61,7 +61,7 @@ TabLogger::TabLogger(const std::wstring &name)
 {
 	dbg = SimpleLogger::instance();
 	m_name = name;
-	if(dbg->isInit)
+	if(dbg && dbg->isInit)
 	{
 		dbg->log(L"<"+m_name+L">");
 		dbg->incTabs();
@@ -70,7 +70,7 @@ TabLogger::TabLogger(const std::wstring &name)
 
 TabLogger::~TabLogger()
 {
-	if(dbg->isInit)
+	if(dbg && dbg->isInit)
 	{
 		dbg->decTabs();
 		dbg->log(L"</"+m_name+L">");
@@ -79,37 +79,56 @@ TabLogger::~TabLogger()
 
 Logger::Logger()
 {
+#ifndef _SIMPLE_NO_DEBUG
 	dbg = SimpleLogger::instance();
+#endif
 }
 
 Logger::~Logger()
 {
-	
+#ifndef _SIMPLE_NO_DEBUG	
 	while(!m_stream.eof())m_buf += m_stream.get();
 	if(dbg->isInit)	dbg->log(m_buf);	
+#endif
 }
 
 Logger &Logger::operator<<(const std::wstring &val)
 {
+#ifndef _SIMPLE_NO_DEBUG
 	m_stream << val;
+#endif
 	return *this;
+
 }
 
 Logger &Logger::operator<<(DWORD val)	
 {
+#ifndef _SIMPLE_NO_DEBUG
 	m_stream << val;
+#endif
 	return *this;
 }
 
 Logger &Logger::operator<<(__int64 val)	
 {
+#ifndef _SIMPLE_NO_DEBUG
 	m_stream << val;
+#endif
 	return *this;
 }
 
 Logger &Logger::operator<<(int val)	
 {
+#ifndef _SIMPLE_NO_DEBUG
 	m_stream << val;
+#endif
 	return *this;
 }
 
+Logger &Logger::operator<<(size_t val)	
+{
+#ifndef _SIMPLE_NO_DEBUG
+	m_stream << val;
+#endif
+	return *this;
+}

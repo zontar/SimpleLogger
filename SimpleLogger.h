@@ -6,14 +6,23 @@
 #include <sstream>
 #include <windows.h>
 
-//определяет блок вида <name> </name>, содержимое сдвигает на 1 таб. Закрывает блок в конце области видимости текущего блока кода
-#define DeclareFunction(name) TabLogger __m_debugger(L#name);
-//Инициализация логгера. Создает синглтон. Определяет файл для записи лога, начинает сессию логирования
-#define InitDebug(fileName) SimpleLogger::instance(fileName);
-//Закрывает сессию логирования, удаляет синглтон
-#define ReleaseDebug SimpleLogger::freeInstance();
-//Непосредвенно запись лога: представляет собой поток, в конце вывода вставляет std::endl
+#ifndef _SIMPLE_NO_DEBUG
+	//определяет блок вида <name> </name>, содержимое сдвигает на 1 таб. Закрывает блок в конце области видимости текущего блока кода
+	#define DeclareFunction(name) TabLogger __m_debugger(L#name);
+	//Инициализация логгера. Создает синглтон. Определяет файл для записи лога, начинает сессию логирования
+	#define InitDebug(fileName) SimpleLogger::instance(fileName);
+	//Закрывает сессию логирования, удаляет синглтон
+	#define ReleaseDebug SimpleLogger::freeInstance();
+	//Непосредвенно запись лога: представляет собой поток, в конце вывода вставляет std::endl
+	
+#else
+	#define DeclareFunction(name) //TabLogger __m_debugger(L#name);
+	#define InitDebug(fileName) //SimpleLogger::instance(fileName);
+	#define ReleaseDebug //SimpleLogger::freeInstance();
+#endif
+
 #define LOG Logger()
+#define PARAM(name) L#name<<L"="<<name<<L"; " 
 
 class SimpleLogger
 {
@@ -53,6 +62,7 @@ public:
 	Logger &operator<<(DWORD val);
 	Logger &operator<<(__int64 val);
 	Logger &operator<<(int val);
+	Logger &operator<<(size_t val);
 
 private:
 	SimpleLogger *dbg;
