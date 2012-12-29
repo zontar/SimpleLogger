@@ -1,3 +1,4 @@
+#include <stdafx.h>
 #include "SimpleLogger.h"
 
 //#include <iostream>
@@ -9,14 +10,14 @@ SimpleLogger::SimpleLogger(const std::wstring &fileName)
 {
 	tabCount=0;
 	isInit = true;
-	sDebug.open(fileName,std::ios::app);
-	sDebug << "[session started on " << __TIME__ << "]" << std::endl << std::endl;
+	m_fileName = fileName;
+	log(L"[session started ]\n\n");
 }
 
 
 SimpleLogger::~SimpleLogger(void)
 {
-	sDebug << "[session closed on " << __TIME__ << "]" << std::endl << std::endl;
+	log(L"[session closed]\n\n");
 	isInit = false;
 	sDebug.close();
 }
@@ -43,8 +44,10 @@ void SimpleLogger::makeTabs()
 
 void SimpleLogger::log(const std::wstring &text)
 {	
+	sDebug.open(m_fileName,std::ios::app);
 	makeTabs();
 	sDebug << text << std::endl;
+	sDebug.close();
 }
 
 void SimpleLogger::incTabs()
