@@ -61,6 +61,7 @@ public:
 	Logger &operator<<(const std::wstring &val);
 	Logger &operator<<(DWORD val);
 	Logger &operator<<(__int64 val);
+	Logger &operator<<(unsigned __int64 val);
 	Logger &operator<<(int val);
 	Logger &operator<<(size_t val);
 

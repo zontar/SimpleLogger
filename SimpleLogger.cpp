@@ -120,6 +120,15 @@ Logger &Logger::operator<<(__int64 val)
 	return *this;
 }
 
+Logger &Logger::operator<<(unsigned __int64 val)	
+{
+#ifndef _SIMPLE_NO_DEBUG
+	m_stream << val;
+#endif
+	return *this;
+}
+
+
 Logger &Logger::operator<<(int val)	
 {
 #ifndef _SIMPLE_NO_DEBUG
