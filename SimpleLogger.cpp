@@ -1,4 +1,4 @@
-#include <stdafx.h>
+//#include <stdafx.h>
 #include "SimpleLogger.h"
 
 //#include <iostream>
@@ -143,4 +143,24 @@ Logger &Logger::operator<<(size_t val)
 	m_stream << val;
 #endif
 	return *this;
+}
+
+Logger &Logger::operator<<(std::string &val)	
+{
+#ifndef _SIMPLE_NO_DEBUG
+	m_stream << widen(val);
+#endif
+	return *this;
+}
+
+std::wstring Logger::widen(const std::string& in, std::locale loc)
+{
+	std::wstring out( in.length(), 0 );
+	std::string::const_iterator i = in.begin(), ie = in.end();
+	std::wstring::iterator j = out.begin();
+
+	for( ; i!=ie; ++i, ++j )
+		*j = std::use_facet< std::ctype< wchar_t > > ( loc ).widen( *i );
+
+	return out;
 }

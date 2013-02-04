@@ -64,8 +64,10 @@ public:
 	Logger &operator<<(unsigned __int64 val);
 	Logger &operator<<(int val);
 	Logger &operator<<(size_t val);
+	Logger &operator<<(std::string &val);
 
 private:
+	std::wstring widen(const std::string& in, std::locale loc  = std::locale());
 	SimpleLogger *dbg;
 	std::wstring m_buf;
 	std::wstringstream m_stream;
